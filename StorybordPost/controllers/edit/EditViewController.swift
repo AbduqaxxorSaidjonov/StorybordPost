@@ -7,21 +7,27 @@
 
 import UIKit
 
-class EditViewController: BaseViewController {
+class EditViewController: BaseViewController, EditView {
     
     @IBOutlet weak var editTitle: UITextField!
     @IBOutlet weak var editBody: UITextField!
-    
+    var presenter: EditPresenter!
     var POSTID: String = "1"
+    var post : Post = Post()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initViews()
+        initNavigation()
+    presenter?.apiSinglePost(id: POSTID)
+    presenter = EditPresenter()
+    presenter.editView = self
+    presenter.controller = self
     }
 
     func initViews(){
-            initNavigation()
-       apiSinglePost(id: POSTID)
+        self.editBody.text = self.post.body
+        self.editTitle.text = self.post.title
+        
     }
     
     func initNavigation(){
@@ -38,37 +44,25 @@ class EditViewController: BaseViewController {
     }
     
     @objc func rightTapped(){
-        apiPostUpdate(id: POSTID)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "edit"), object: nil)
+        presenter?.apiPostUpdate(id: POSTID, post: Post(title: editTitle.text!, body: editBody.text!))
     }
     
-    func apiSinglePost(id: String){
-        showProgress()
-        AFHttp.get(url: AFHttp.API_POST_SINGLE + id, params: AFHttp.paramsEmpty(), handler: {response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                let postTitle = try! JSONDecoder().decode(Post.self, from: response.data!).title
-                let postBody = try! JSONDecoder().decode(Post.self, from: response.data!).body
-                self.editTitle.text = postTitle
-                self.editBody.text = postBody
-            case let .failure(error):
-                print(error)
-            }
-        })
+    func onEdited(status: Bool) {
+        if status{
+            self.dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "edit"), object: nil)
+        }else{
+            //error
+        }
     }
     
-    func apiPostUpdate(id: String){
-        showProgress()
-        AFHttp.put(url: AFHttp.API_POST_UPDATE + id, params: AFHttp.paramsPostUpdate(post: Post(title: editTitle.text!, body: editBody.text!)), handler: {response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                print(response.result)
-                self.dismiss(animated: true, completion: nil)
-            case let .failure(error):
-                print(error)
-            }
-        })
+    func onCall(post: Post) {
+        if post != nil{
+            self.post = post
+            initViews()
+        }else{
+            //error
+        }
     }
+   
 }
