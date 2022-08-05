@@ -29,6 +29,10 @@
 		7640AB142886D3C70031D034 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7640AB132886D3C70031D034 /* Alamofire */; };
 		7640AB172886D3E00031D034 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7640AB162886D3E00031D034 /* Network.swift */; };
 		7640AB1A2886D48A0031D034 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 7640AB192886D48A0031D034 /* JGProgressHUD */; };
+		7667ED75289D2DEE00405502 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667ED74289D2DEE00405502 /* CreateView.swift */; };
+		7667ED77289D2E0000405502 /* CreatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667ED76289D2E0000405502 /* CreatePresenter.swift */; };
+		766B7B67288DD7C200A8C55B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766B7B66288DD7C200A8C55B /* HomeView.swift */; };
+		766B7B69288DD7D900A8C55B /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766B7B68288DD7D900A8C55B /* HomePresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +77,10 @@
 		76270F1B2885C17A00F5623D /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		76270F1C2885C17A00F5623D /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
 		7640AB162886D3E00031D034 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		7667ED74289D2DEE00405502 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
+		7667ED76289D2E0000405502 /* CreatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePresenter.swift; sourceTree = "<group>"; };
+		766B7B66288DD7C200A8C55B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		766B7B68288DD7D900A8C55B /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,12 +167,9 @@
 			isa = PBXGroup;
 			children = (
 				76270F152885BDB000F5623D /* BaseViewController.swift */,
-				76270F09288558FC00F5623D /* HomeViewController.swift */,
-				76270F0A288558FC00F5623D /* HomeViewController.xib */,
-				76270F0D2885BC8B00F5623D /* CreateViewController.swift */,
-				76270F0E2885BC8B00F5623D /* CreateViewController.xib */,
-				76270F112885BCB400F5623D /* EditViewController.swift */,
-				76270F122885BCB400F5623D /* EditViewController.xib */,
+				766B7B64288DD77B00A8C55B /* home */,
+				7667ED70289D2D8D00405502 /* create */,
+				7667ED72289D2DAA00405502 /* edit */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -202,6 +207,61 @@
 				7640AB162886D3E00031D034 /* Network.swift */,
 			);
 			path = networking;
+			sourceTree = "<group>";
+		};
+		7667ED70289D2D8D00405502 /* create */ = {
+			isa = PBXGroup;
+			children = (
+				7667ED71289D2DA000405502 /* presenter */,
+				76270F0D2885BC8B00F5623D /* CreateViewController.swift */,
+				76270F0E2885BC8B00F5623D /* CreateViewController.xib */,
+			);
+			path = create;
+			sourceTree = "<group>";
+		};
+		7667ED71289D2DA000405502 /* presenter */ = {
+			isa = PBXGroup;
+			children = (
+				7667ED74289D2DEE00405502 /* CreateView.swift */,
+				7667ED76289D2E0000405502 /* CreatePresenter.swift */,
+			);
+			path = presenter;
+			sourceTree = "<group>";
+		};
+		7667ED72289D2DAA00405502 /* edit */ = {
+			isa = PBXGroup;
+			children = (
+				7667ED73289D2DBA00405502 /* presenter */,
+				76270F112885BCB400F5623D /* EditViewController.swift */,
+				76270F122885BCB400F5623D /* EditViewController.xib */,
+			);
+			path = edit;
+			sourceTree = "<group>";
+		};
+		7667ED73289D2DBA00405502 /* presenter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = presenter;
+			sourceTree = "<group>";
+		};
+		766B7B64288DD77B00A8C55B /* home */ = {
+			isa = PBXGroup;
+			children = (
+				766B7B65288DD7A300A8C55B /* presenter */,
+				76270F09288558FC00F5623D /* HomeViewController.swift */,
+				76270F0A288558FC00F5623D /* HomeViewController.xib */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
+		766B7B65288DD7A300A8C55B /* presenter */ = {
+			isa = PBXGroup;
+			children = (
+				766B7B66288DD7C200A8C55B /* HomeView.swift */,
+				766B7B68288DD7D900A8C55B /* HomePresenter.swift */,
+			);
+			path = presenter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -350,12 +410,16 @@
 				7640AB172886D3E00031D034 /* Network.swift in Sources */,
 				76270F0F2885BC8B00F5623D /* CreateViewController.swift in Sources */,
 				76270EDF288558AE00F5623D /* StorybordPost.xcdatamodeld in Sources */,
+				766B7B69288DD7D900A8C55B /* HomePresenter.swift in Sources */,
 				76270F132885BCB400F5623D /* EditViewController.swift in Sources */,
 				76270F192885BF2800F5623D /* Post.swift in Sources */,
+				766B7B67288DD7C200A8C55B /* HomeView.swift in Sources */,
 				76270ED5288558AE00F5623D /* AppDelegate.swift in Sources */,
+				7667ED75289D2DEE00405502 /* CreateView.swift in Sources */,
 				76270ED7288558AE00F5623D /* SceneDelegate.swift in Sources */,
 				76270F162885BDB000F5623D /* BaseViewController.swift in Sources */,
 				76270F0B288558FC00F5623D /* HomeViewController.swift in Sources */,
+				7667ED77289D2E0000405502 /* CreatePresenter.swift in Sources */,
 				76270F1D2885C17A00F5623D /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

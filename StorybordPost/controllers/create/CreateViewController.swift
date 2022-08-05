@@ -7,11 +7,12 @@
 
 import UIKit
 
-class CreateViewController: BaseViewController {
+class CreateViewController: BaseViewController, CreateView {
+    
 
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var bodyTextField: UITextField!
-    
+    var presenter: CreatePresenter!
     override func viewDidLoad() {
         super.viewDidLoad()
         initViews()
@@ -19,6 +20,18 @@ class CreateViewController: BaseViewController {
 
     func initViews(){
         initNavigation()
+        presenter = CreatePresenter()
+        presenter.createView = self
+        presenter.controller = self
+        
+    }
+  
+    func onCreatePosts(status: Bool) {
+        if status {
+            navigationController?.popViewController(animated: true)
+        }else{
+            //error
+        }
     }
     
     func initNavigation(){
@@ -35,21 +48,8 @@ class CreateViewController: BaseViewController {
     }
     
     @objc func rightTapped(){
-        apiPostCreate()
+        presenter?.apiPostCreate(post: Post(title: titleTextField.text!, body: bodyTextField.text!))
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
-    }
-    
-    func apiPostCreate(){
-        showProgress()
-        AFHttp.post(url: AFHttp.API_POST_CREATE, params: AFHttp.paramsPostCreate(post: Post(title: titleTextField.text!, body: bodyTextField.text!)), handler: {response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                print(response.result)
-                self.navigationController?.popViewController(animated: true)
-            case let .failure(error):
-                print(error)
-            }
-        })
+        
     }
 }

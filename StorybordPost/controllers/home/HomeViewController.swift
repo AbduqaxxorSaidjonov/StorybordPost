@@ -7,10 +7,11 @@
 
 import UIKit
 
-class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, HomeView {
 
     @IBOutlet weak var TableView: UITableView!
     var items : Array<Post> = Array()
+    var presenter: HomePresenter!
     var postId: String = ""
     
     override func viewDidLoad() {
@@ -19,47 +20,35 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         initViews()
     }
     
+    func onLoadPosts(posts: [Post]) {
+        if posts.count > 0 {
+            refreshTableView(posts: posts)
+        }else{
+            //error
+        }
+    }
+    
+    func onPostDelete(deleted: Bool) {
+        if deleted {
+            presenter.apiPostList()
+        }else{
+            //error
+        }
+    }
+    
     func refreshTableView(posts: [Post]){
         self.items = posts
         self.TableView.reloadData()
     }
-
-    func apiPostList(){
-        showProgress()
-        AFHttp.get(url: AFHttp.API_POST_LIST, params: AFHttp.paramsEmpty(), handler: {response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                let posts = try! JSONDecoder().decode([Post].self, from: response.data!)
-                self.refreshTableView(posts: posts)
-            case let .failure(error):
-                print(error)
-            }
-        })
-    }
-
-    
-    func apiPostDelete(post: Post){
-        showProgress()
-        AFHttp.del(url: AFHttp.API_POST_DELETE + post.id!, params: AFHttp.paramsEmpty(), handler: {response in
-            self.hideProgress()
-            switch response.result{
-            case .success:
-                print(response.result)
-                self.apiPostList()
-            case let .failure(error):
-                print(error)
-            }
-        })
-    }
-    
-    
     
     func initViews(){
         TableView.dataSource = self
         TableView.delegate = self
         initNavigation()
-        apiPostList()
+        presenter = HomePresenter()
+        presenter.homeView = self
+        presenter.controller = self
+        presenter.apiPostList()
         refreshView()
     }
 
@@ -92,7 +81,7 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     // MARK: - Action
     
     @objc func leftTapped(){
-        apiPostList()
+        presenter.apiPostList()
     }
     
     @objc func rightTapped(){
@@ -101,12 +90,12 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
     
     @objc func doThisWhenNotifyLoad(notification : NSNotification) {
             //update tableview
-        apiPostList()
+        presenter.apiPostList()
     }
     
     @objc func doThisWhenNotifyEdit(notification : NSNotification) {
             //update tableview
-        apiPostList()
+        presenter.apiPostList()
     }
     
     // MARK: - Table View
@@ -138,7 +127,7 @@ class HomeViewController: BaseViewController, UITableViewDelegate, UITableViewDa
         return UIContextualAction(style: .destructive, title: "Delete"){ (action, swipeButtonView, completion) in
             print("Delete Here")
             completion(true)
-            self.apiPostDelete(post: post)
+            self.presenter.apiPostDelete(post: post)
         }
     }
     
